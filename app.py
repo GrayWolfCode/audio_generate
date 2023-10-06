@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 import firebase_admin
+import time
 from firebase_admin import credentials, storage
 import os
 import requests
@@ -84,7 +85,7 @@ def generate_audio():
         }
     }
     audio_response = requests.post(audio_url, json=data, headers=headers)
-    audio_path = "output.mp3"
+    audio_path = f"audio_{int(time.time())}.mp3"
     
     with open(audio_path, 'wb') as f:
         f.write(audio_response.content)
