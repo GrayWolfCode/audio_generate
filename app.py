@@ -85,7 +85,7 @@ def generate_audio():
         }
     }
     audio_response = requests.post(audio_url, json=data, headers=headers)
-    audio_path = f"audio_{int(time.time())}.mp3"
+    audio_path = f"audio_{int(time.time())}.aac"
     
     with open(audio_path, 'wb') as f:
         f.write(audio_response.content)
