@@ -6,6 +6,7 @@ from firebase_admin import credentials, storage
 import os
 import requests
 from moviepy.editor import *
+from moviepy.editor import AudioFileClip
 
 app = Flask(__name__)
 CORS(app)
@@ -85,12 +86,13 @@ def generate_audio():
         }
     }
     audio_response = requests.post(audio_url, json=data, headers=headers)
-    audio_path = f"audio_{int(time.time())}.aac"
-    
+    audio_path = f"audio_{int(time.time())}.mp3"
     with open(audio_path, 'wb') as f:
         f.write(audio_response.content)
-
-    audio_url = upload_to_firebase(audio_path)
+    audio_clip = AudioFileClip(audio_path)
+    aac_path = f"audio_{int(time.time())}.aac"
+    audio_clip.write_audiofile(aac_path, codec='aac')
+    audio_url = upload_to_firebase(aac_path)
     
     return jsonify({"audio_url": audio_url})
 
